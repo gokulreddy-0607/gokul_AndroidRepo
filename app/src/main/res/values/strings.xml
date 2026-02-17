@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">ForTirupati</string>
+    <string name="invalid_username_or_password">Invalid username or password</string>
+    <string name="add_photo">Add Photo</string>
+    <string name="residence_hotel_name">Residence / Hotel Name</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="get_gps_location">Get GPS Location</string>
+    <string name="distance_from_bus_stand_km">Distance from Bus Stand (KM)</string>
+    <string name="distance_from_railway_station_km">Distance from Railway Station (KM)</string>
+    <string name="facilities">Facilities</string>
+    <string name="ac_rooms">AC Rooms</string>
+    <string name="non_ac_rooms">Non-AC Rooms</string>
+    <string name="hot_water">Hot Water</string>
+    <string name="car_parking">Car Parking</string>
+    <string name="booking_whatsapp_link">Booking / WhatsApp Link</string>
+    <string name="description">Description</string>
+    <string name="submit_residence">Submit Residence</string>
+    <string name="open_bus_stand">Open Bus Stand</string>
+    <string name="open_railway_station">Open Railway Station</string>
+    <string name="distance_km">%1$s km</string>
+    <string name="community_sathrams">Community Sathrams</string>
+    <string name="add_photos">Add Photos</string>
+    <string name="address">Address</string>
+    <string name="year_of_establishment">Year of Establishment</string>
+    <string name="start_cost">Start Cost</string>
+    <string name="ending_cost">Ending Cost</string>
+    <string name="get_gps">Get GPS</string>
+    <string name="bus_distance">Bus distance</string>
+    <string name="railway_distance">Railway distance</string>
+</resources>

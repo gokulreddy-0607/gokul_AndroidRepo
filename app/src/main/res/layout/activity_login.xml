@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/glass_gradient_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/glass_panel_bg"
+        android:layout_margin="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ForTirupati Login"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/glass_text_color"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="32dp"/>
+
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            android:textColorHint="@color/glass_panel_stroke"
+            android:textColor="@color/glass_text_color"
+            android:backgroundTint="@color/glass_panel_stroke"
+            android:inputType="textPersonName"/>
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:textColorHint="@color/glass_panel_stroke"
+            android:textColor="@color/glass_text_color"
+            android:backgroundTint="@color/glass_panel_stroke"
+            android:inputType="textPassword"
+            android:layout_marginTop="16dp"/>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Sign In"
+            android:textSize="18sp"
+            android:background="@drawable/glass_button_bg"
+            android:textColor="@color/glass_text_color"
+            android:layout_marginTop="32dp"/>
+
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF0000"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
