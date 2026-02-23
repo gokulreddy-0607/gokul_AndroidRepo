@@ -84,7 +84,8 @@ public class twentyoneActivity extends AppCompatActivity {
     private static final double RAIL_LNG = 79.419280;
 
     // ================= IMAGES =================
-    private final List<Uri> imageUris = new ArrayList<>();
+    private final List<String> imageUrls = new ArrayList<>();
+    private final List<Uri> newImageUris = new ArrayList<>();
     private ImageAdapter imageAdapter;
 
     // ================= FIREBASE =================
@@ -103,10 +104,12 @@ public class twentyoneActivity extends AppCompatActivity {
                             if (result.getData().getClipData() != null) {
                                 ClipData clipData = result.getData().getClipData();
                                 for (int i = 0; i < clipData.getItemCount(); i++) {
-                                    imageUris.add(clipData.getItemAt(i).getUri());
+                                    newImageUris.add(clipData.getItemAt(i).getUri());
+                                    imageUrls.add(clipData.getItemAt(i).getUri().toString());
                                 }
                             } else if (result.getData().getData() != null) {
-                                imageUris.add(result.getData().getData());
+                                newImageUris.add(result.getData().getData());
+                                imageUrls.add(result.getData().getData().toString());
                             }
                             imageAdapter.notifyDataSetChanged();
                         }
@@ -231,9 +234,7 @@ public class twentyoneActivity extends AppCompatActivity {
         }
 
         if (sathram.getImageUrls() != null && !sathram.getImageUrls().isEmpty()) {
-            for (String url : sathram.getImageUrls()) {
-                imageUris.add(Uri.parse(url));
-            }
+            imageUrls.addAll(sathram.getImageUrls());
             imageAdapter.notifyDataSetChanged();
         }
     }
@@ -258,38 +259,23 @@ public class twentyoneActivity extends AppCompatActivity {
             entryId = name;
         }
 
-        if (imageUris.isEmpty()) {
-            uploadFormDetails(entryId, new ArrayList<>());
+        if (newImageUris.isEmpty()) {
+            uploadFormDetails(entryId, imageUrls);
         } else {
             uploadImagesAndThenFormDetails(entryId);
         }
     }
 
     private void uploadImagesAndThenFormDetails(String entryId) {
-        List<String> uploadedImageUrls = new ArrayList<>();
+        List<String> uploadedImageUrls = new ArrayList<>(imageUrls);
         StorageReference imageFolderRef = storageReference.child("images/" + entryId);
-
-        List<Uri> newImageUris = new ArrayList<>();
-        for (Uri uri : imageUris) {
-            if (uri != null && (uri.getScheme().equals("http") || uri.getScheme().equals("https"))) {
-                uploadedImageUrls.add(uri.toString());
-            } else {
-                newImageUris.add(uri);
-            }
-        }
-
-        if (newImageUris.isEmpty()) {
-            uploadFormDetails(entryId, uploadedImageUrls);
-            return;
-        }
-
 
         for (int i = 0; i < newImageUris.size(); i++) {
             Uri imageUri = newImageUris.get(i);
             StorageReference imageRef = imageFolderRef.child(UUID.randomUUID().toString());
             imageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                 uploadedImageUrls.add(uri.toString());
-                if (uploadedImageUrls.size() == (existingSathram != null ? existingSathram.getImageUrls().size() : 0) + newImageUris.size()) {
+                if (uploadedImageUrls.size() == imageUrls.size() + newImageUris.size()) {
                     uploadFormDetails(entryId, uploadedImageUrls);
                 }
             })).addOnFailureListener(e -> {
@@ -369,7 +355,7 @@ public class twentyoneActivity extends AppCompatActivity {
 
     private void setupImageRecyclerView() {
         imageRecyclerView = findViewById(R.id.imageRecyclerView);
-        imageAdapter = new ImageAdapter(imageUris);
+        imageAdapter = new ImageAdapter(imageUrls);
         imageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         imageRecyclerView.setAdapter(imageAdapter);
     }

@@ -1,13 +1,16 @@
 package com.example.dapp_b;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -22,10 +26,12 @@ public class SathramAdapter extends RecyclerView.Adapter<SathramAdapter.SathramV
 
     private final List<Sathram> sathramList;
     private final Context context;
+    private final String category;
 
-    public SathramAdapter(Context context, List<Sathram> sathramList) {
+    public SathramAdapter(Context context, List<Sathram> sathramList, String category) {
         this.context = context;
         this.sathramList = sathramList;
+        this.category = category;
     }
 
     @NonNull
@@ -38,28 +44,40 @@ public class SathramAdapter extends RecyclerView.Adapter<SathramAdapter.SathramV
     @Override
     public void onBindViewHolder(@NonNull SathramViewHolder holder, int position) {
         Sathram sathram = sathramList.get(position);
-        holder.tvName.setText(sathram.getName());
+
+        // Set text with labels, displaying "null" if data is missing
+        holder.tvName.setText("Name: " + sathram.getName());
         holder.tvYear.setText("Year: " + sathram.getYear());
         holder.tvCost.setText("Cost: ₹" + sathram.getStartCost() + " - ₹" + sathram.getEndCost());
-        if (sathram.getRating() != null) {
-            holder.ratingBar.setRating(sathram.getRating().floatValue());
-        }
         holder.tvDescription.setText("Description: " + sathram.getDescription());
         holder.tvWebsite.setText("Website: " + sathram.getWebsite());
         holder.tvPhone.setText("Phone: " + sathram.getPhone());
         holder.tvBusDistance.setText("Bus Distance: " + sathram.getBusDistance());
         holder.tvRailDistance.setText("Rail Distance: " + sathram.getRailDistance());
+        holder.tvLat.setText("Latitude: " + sathram.getLat());
+        holder.tvLng.setText("Longitude: " + sathram.getLng());
         holder.tvStayType.setText("Stay Type: " + sathram.getStayType());
         holder.tvCheckInTime.setText("Check-in: " + sathram.getCheckInTime());
         holder.tvCheckOutTime.setText("Check-out: " + sathram.getCheckOutTime());
 
+        // Handle rating, which can be null
+        if (sathram.getRating() != null) {
+            holder.ratingBar.setRating(sathram.getRating().floatValue());
+        } else {
+            holder.ratingBar.setRating(0);
+        }
 
+        // Set checkboxes
         holder.cbAc.setChecked(sathram.isAcRooms());
         holder.cbNonAc.setChecked(sathram.isNonAcRooms());
         holder.cbHotWater.setChecked(sathram.isHotWater());
         holder.cbParking.setChecked(sathram.isParking());
 
+        // Set up image slider
         if (sathram.getImageUrls() != null && !sathram.getImageUrls().isEmpty()) {
+            holder.viewPager.setVisibility(View.VISIBLE);
+            holder.btnPrev.setVisibility(View.VISIBLE);
+            holder.btnNext.setVisibility(View.VISIBLE);
             ImageViewPagerAdapter adapter = new ImageViewPagerAdapter(context, sathram.getImageUrls());
             holder.viewPager.setAdapter(adapter);
 
@@ -76,7 +94,35 @@ public class SathramAdapter extends RecyclerView.Adapter<SathramAdapter.SathramV
                     holder.viewPager.setCurrentItem(currentItem + 1);
                 }
             });
+        } else {
+            holder.viewPager.setVisibility(View.GONE);
+            holder.btnPrev.setVisibility(View.GONE);
+            holder.btnNext.setVisibility(View.GONE);
         }
+
+        // Set up delete button
+        holder.btnDelete.setOnClickListener(v -> {
+            String key = sathram.getKey();
+            if (key != null) {
+                FirebaseDatabase.getInstance().getReference(category).child(key).removeValue()
+                        .addOnSuccessListener(aVoid -> {
+                            sathramList.remove(position);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, sathramList.size());
+                            Toast.makeText(context, "Item deleted successfully", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> Toast.makeText(context, "Failed to delete item", Toast.LENGTH_SHORT).show());
+            }
+        });
+
+
+        // Set up edit button
+        holder.btnEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(context, twentyoneActivity.class);
+            intent.putExtra("SATHRAM_DATA", sathram);
+            intent.putExtra("CATEGORY", category);
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -85,11 +131,12 @@ public class SathramAdapter extends RecyclerView.Adapter<SathramAdapter.SathramV
     }
 
     static class SathramViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvYear, tvCost, tvDescription, tvWebsite, tvPhone, tvBusDistance, tvRailDistance, tvStayType, tvCheckInTime, tvCheckOutTime;
+        TextView tvName, tvYear, tvCost, tvDescription, tvWebsite, tvPhone, tvBusDistance, tvRailDistance, tvLat, tvLng, tvStayType, tvCheckInTime, tvCheckOutTime;
         RatingBar ratingBar;
         ViewPager2 viewPager;
         ImageButton btnPrev, btnNext;
         AppCompatCheckBox cbAc, cbNonAc, cbHotWater, cbParking;
+        Button btnEdit, btnDelete;
 
         public SathramViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +148,8 @@ public class SathramAdapter extends RecyclerView.Adapter<SathramAdapter.SathramV
             tvPhone = itemView.findViewById(R.id.tv_phone);
             tvBusDistance = itemView.findViewById(R.id.tv_bus_distance);
             tvRailDistance = itemView.findViewById(R.id.tv_rail_distance);
+            tvLat = itemView.findViewById(R.id.tv_lat);
+            tvLng = itemView.findViewById(R.id.tv_lng);
             tvStayType = itemView.findViewById(R.id.tv_stay_type);
             tvCheckInTime = itemView.findViewById(R.id.tv_check_in_time);
             tvCheckOutTime = itemView.findViewById(R.id.tv_check_out_time);
@@ -112,6 +161,8 @@ public class SathramAdapter extends RecyclerView.Adapter<SathramAdapter.SathramV
             cbNonAc = itemView.findViewById(R.id.cb_non_ac);
             cbHotWater = itemView.findViewById(R.id.cb_hot_water);
             cbParking = itemView.findViewById(R.id.cb_parking);
+            btnEdit = itemView.findViewById(R.id.btn_edit);
+            btnDelete = itemView.findViewById(R.id.btn_delete);
         }
     }
 }

@@ -2,7 +2,9 @@ package com.example.dapp_b;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,24 +27,26 @@ public class SathramListActivity extends AppCompatActivity {
     private SathramAdapter sathramAdapter;
     private List<Sathram> sathramList;
     private DatabaseReference databaseReference;
+    private static final String TAG = "SathramListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sathram_list);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        sathramList = new ArrayList<>();
-        sathramAdapter = new SathramAdapter(this, sathramList);
-        recyclerView.setAdapter(sathramAdapter);
-
         String categoryValue = getIntent().getStringExtra("CATEGORY");
         if (categoryValue == null) {
             categoryValue = "CommunitySathrams"; // Default category
         }
         final String category = categoryValue;
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        sathramList = new ArrayList<>();
+        sathramAdapter = new SathramAdapter(this, sathramList, category);
+        recyclerView.setAdapter(sathramAdapter);
+
         databaseReference = FirebaseDatabase.getInstance().getReference(category);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -51,14 +55,21 @@ public class SathramListActivity extends AppCompatActivity {
                 sathramList.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Sathram sathram = postSnapshot.getValue(Sathram.class);
-                    sathramList.add(sathram);
+                    if (sathram != null) {
+                        sathram.setKey(postSnapshot.getKey()); // Store the key
+                        sathramList.add(sathram);
+                    } else {
+                        Log.e(TAG, "Failed to parse Sathram object for key: " + postSnapshot.getKey());
+                    }
                 }
                 sathramAdapter.notifyDataSetChanged();
+                Toast.makeText(SathramListActivity.this, "Loaded " + sathramList.size() + " items.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle error
+                Log.e(TAG, "Database error: " + databaseError.getMessage());
+                Toast.makeText(SathramListActivity.this, "Failed to load data: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

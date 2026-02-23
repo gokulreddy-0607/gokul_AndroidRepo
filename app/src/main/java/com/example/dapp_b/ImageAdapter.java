@@ -13,10 +13,10 @@ import java.util.List;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
 
-    private final List<Uri> imageUris;
+    private final List<String> imageUrls;
 
-    public ImageAdapter(List<Uri> imageUris) {
-        this.imageUris = imageUris;
+    public ImageAdapter(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
     }
 
     @NonNull
@@ -28,22 +28,22 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-        Uri imageUri = imageUris.get(position);
+        String imageUrl = imageUrls.get(position);
 
         Glide.with(holder.imageView.getContext())
-                .load(imageUri)
+                .load(imageUrl)
                 .into(holder.imageView);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), FullScreenImageActivity.class);
-            intent.putExtra("imageUri", imageUri);
+            intent.putExtra("imageUri", imageUrl);
             v.getContext().startActivity(intent);
         });
 
         holder.removeImageButton.setOnClickListener(v -> {
             int adapterPosition = holder.getBindingAdapterPosition();
             if (adapterPosition != RecyclerView.NO_POSITION) {
-                imageUris.remove(adapterPosition);
+                imageUrls.remove(adapterPosition);
                 notifyItemRemoved(adapterPosition);
             }
         });
@@ -51,7 +51,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public int getItemCount() {
-        return imageUris.size();
+        return imageUrls.size();
     }
 
     static class ImageViewHolder extends RecyclerView.ViewHolder {

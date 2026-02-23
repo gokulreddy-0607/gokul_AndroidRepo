@@ -26,6 +26,10 @@ public class Sathram implements Serializable {
     private List<String> imageUrls;
     private String key;
 
+    // Public no-argument constructor is required for Firebase deserialization
+    public Sathram() {
+    }
+
     public String getName() {
         return name;
     }

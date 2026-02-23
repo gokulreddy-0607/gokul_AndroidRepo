@@ -6,6 +6,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+
 public class FullScreenImageActivity extends AppCompatActivity {
 
     @Override
@@ -16,9 +18,11 @@ public class FullScreenImageActivity extends AppCompatActivity {
         ImageView fullScreenImageView = findViewById(R.id.fullScreenImageView);
         ImageButton backButton = findViewById(R.id.backButton);
 
-        Uri imageUri = getIntent().getParcelableExtra("imageUri");
-        if (imageUri != null) {
-            fullScreenImageView.setImageURI(imageUri);
+        String imageUriString = getIntent().getStringExtra("imageUri");
+        if (imageUriString != null) {
+            Glide.with(this)
+                    .load(imageUriString)
+                    .into(fullScreenImageView);
         }
 
         backButton.setOnClickListener(v -> finish());
