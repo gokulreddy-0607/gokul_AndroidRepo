@@ -57,7 +57,7 @@ public class twentyoneActivity extends AppCompatActivity {
     RecyclerView imageRecyclerView;
     Button btnPhoto, btnGetLocation, btnBus, btnRail, btnSubmit;
 
-    EditText etName, etName1, etName3, etName4;
+    EditText etName, etName1, etName3, etName4, etBedrooms, etBathrooms;
     EditText etLat, etLng, etCheckIn, etCheckOut;
     EditText etWebsite, etPhone, etDescription;
 
@@ -67,9 +67,9 @@ public class twentyoneActivity extends AppCompatActivity {
 
     RadioGroup rgStayType;
     RadioButton rb24Hours, rbCheckInOut;
-    TextView tv24HoursInfo;
+    TextView tv24HoursInfo, tvTitle;
     LinearLayout layoutCheckInOut;
-    CheckBox cbAC, cbNonAC, cbHotWater, cbParking;
+    CheckBox cbAC, cbNonAC, cbHotWater, cbParking, cbKitchen;
 
     // ================= LOCATION =================
     FusedLocationProviderClient fusedLocationClient;
@@ -160,6 +160,13 @@ public class twentyoneActivity extends AppCompatActivity {
         if (category == null) {
             category = "CommunitySathrams"; // Default category
         }
+        tvTitle.setText(category);
+
+        if ("HomeStays".equals(category)) {
+            cbKitchen.setVisibility(View.VISIBLE);
+            etBedrooms.setVisibility(View.VISIBLE);
+            etBathrooms.setVisibility(View.VISIBLE);
+        }
 
         databaseReference = FirebaseDatabase.getInstance().getReference(category);
 
@@ -201,6 +208,8 @@ public class twentyoneActivity extends AppCompatActivity {
         etName1.setText(sathram.getYear());
         etName3.setText(sathram.getStartCost());
         etName4.setText(sathram.getEndCost());
+        etBedrooms.setText(sathram.getBedrooms());
+        etBathrooms.setText(sathram.getBathrooms());
 
         if (sathram.getLat() != null && sathram.getLng() != null) {
             etLat.setText(String.valueOf(sathram.getLat()));
@@ -224,6 +233,7 @@ public class twentyoneActivity extends AppCompatActivity {
         cbNonAC.setChecked(sathram.isNonAcRooms());
         cbHotWater.setChecked(sathram.isHotWater());
         cbParking.setChecked(sathram.isParking());
+        cbKitchen.setChecked(sathram.isKitchen());
 
         if ("24 Hours".equals(sathram.getStayType())) {
             rb24Hours.setChecked(true);
@@ -292,6 +302,8 @@ public class twentyoneActivity extends AppCompatActivity {
         data.put("year", etName1.getText().toString());
         data.put("startCost", etName3.getText().toString());
         data.put("endCost", etName4.getText().toString());
+        data.put("bedrooms", etBedrooms.getText().toString());
+        data.put("bathrooms", etBathrooms.getText().toString());
         if (isLocationFetched) {
             data.put("lat", userLat);
             data.put("lng", userLng);
@@ -309,6 +321,7 @@ public class twentyoneActivity extends AppCompatActivity {
         data.put("nonAcRooms", cbNonAC.isChecked());
         data.put("hotWater", cbHotWater.isChecked());
         data.put("parking", cbParking.isChecked());
+        data.put("kitchen", cbKitchen.isChecked());
         data.put("imageUrls", imageUrls);
 
         int selectedStayTypeId = rgStayType.getCheckedRadioButtonId();
@@ -440,6 +453,8 @@ public class twentyoneActivity extends AppCompatActivity {
         etName1 = findViewById(R.id.etName1);
         etName3 = findViewById(R.id.etName3);
         etName4 = findViewById(R.id.etName4);
+        etBedrooms = findViewById(R.id.etBedrooms);
+        etBathrooms = findViewById(R.id.etBathrooms);
         etLat = findViewById(R.id.etLatitude);
         etLng = findViewById(R.id.etLongitude);
         etCheckIn = findViewById(R.id.etCheckIn);
@@ -454,10 +469,12 @@ public class twentyoneActivity extends AppCompatActivity {
         rb24Hours = findViewById(R.id.rb24Hours);
         rbCheckInOut = findViewById(R.id.rbCheckInOut);
         tv24HoursInfo = findViewById(R.id.tv24HoursInfo);
+        tvTitle = findViewById(R.id.tv_title);
         layoutCheckInOut = findViewById(R.id.layoutCheckInOut);
         cbAC = findViewById(R.id.cbAC);
         cbNonAC = findViewById(R.id.cbNonAC);
         cbHotWater = findViewById(R.id.cbHotWater);
         cbParking = findViewById(R.id.cbParking);
+        cbKitchen = findViewById(R.id.cbKitchen);
     }
 }

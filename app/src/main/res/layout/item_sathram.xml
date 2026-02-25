@@ -74,6 +74,28 @@
             app:layout_constraintTop_toBottomOf="@id/tv_year"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <TextView
+            android:id="@+id/tv_bedrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bedrooms"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@id/tv_cost"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_bathrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bathrooms"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@id/tv_bedrooms"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"/>
+
         <RatingBar
             android:id="@+id/ratingBar"
             style="?android:attr/ratingBarStyleSmall"
@@ -82,7 +104,7 @@
             android:layout_marginTop="8dp"
             android:numStars="5"
             android:stepSize="0.1"
-            app:layout_constraintTop_toBottomOf="@id/tv_cost"
+            app:layout_constraintTop_toBottomOf="@id/tv_bathrooms"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
@@ -229,12 +251,23 @@
             app:layout_constraintStart_toEndOf="@id/cb_hot_water"
             android:layout_marginStart="16dp"/>
 
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cb_kitchen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kitchen"
+            android:textColor="@android:color/black"
+            app:buttonCompat="@drawable/custom_checkbox"
+            app:layout_constraintTop_toBottomOf="@id/cb_hot_water"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"/>
+
         <Button
             android:id="@+id/btn_edit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Edit"
-            app:layout_constraintTop_toBottomOf="@id/cb_parking"
+            app:layout_constraintTop_toBottomOf="@id/cb_kitchen"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_delete"
             android:layout_marginTop="16dp"
@@ -245,7 +278,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Delete"
-            app:layout_constraintTop_toBottomOf="@id/cb_parking"
+            app:layout_constraintTop_toBottomOf="@id/cb_kitchen"
             app:layout_constraintStart_toEndOf="@id/btn_edit"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16dp"

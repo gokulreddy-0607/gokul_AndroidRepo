@@ -73,6 +73,19 @@ public class SathramAdapter extends RecyclerView.Adapter<SathramAdapter.SathramV
         holder.cbHotWater.setChecked(sathram.isHotWater());
         holder.cbParking.setChecked(sathram.isParking());
 
+        if ("HomeStays".equals(category)) {
+            holder.cbKitchen.setVisibility(View.VISIBLE);
+            holder.cbKitchen.setChecked(sathram.isKitchen());
+            holder.tvBedrooms.setVisibility(View.VISIBLE);
+            holder.tvBedrooms.setText("Bedrooms: " + sathram.getBedrooms());
+            holder.tvBathrooms.setVisibility(View.VISIBLE);
+            holder.tvBathrooms.setText("Bathrooms: " + sathram.getBathrooms());
+        } else {
+            holder.cbKitchen.setVisibility(View.GONE);
+            holder.tvBedrooms.setVisibility(View.GONE);
+            holder.tvBathrooms.setVisibility(View.GONE);
+        }
+
         // Set up image slider
         if (sathram.getImageUrls() != null && !sathram.getImageUrls().isEmpty()) {
             holder.viewPager.setVisibility(View.VISIBLE);
@@ -131,11 +144,11 @@ public class SathramAdapter extends RecyclerView.Adapter<SathramAdapter.SathramV
     }
 
     static class SathramViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvYear, tvCost, tvDescription, tvWebsite, tvPhone, tvBusDistance, tvRailDistance, tvLat, tvLng, tvStayType, tvCheckInTime, tvCheckOutTime;
+        TextView tvName, tvYear, tvCost, tvDescription, tvWebsite, tvPhone, tvBusDistance, tvRailDistance, tvLat, tvLng, tvStayType, tvCheckInTime, tvCheckOutTime, tvBedrooms, tvBathrooms;
         RatingBar ratingBar;
         ViewPager2 viewPager;
         ImageButton btnPrev, btnNext;
-        AppCompatCheckBox cbAc, cbNonAc, cbHotWater, cbParking;
+        AppCompatCheckBox cbAc, cbNonAc, cbHotWater, cbParking, cbKitchen;
         Button btnEdit, btnDelete;
 
         public SathramViewHolder(@NonNull View itemView) {
@@ -153,6 +166,8 @@ public class SathramAdapter extends RecyclerView.Adapter<SathramAdapter.SathramV
             tvStayType = itemView.findViewById(R.id.tv_stay_type);
             tvCheckInTime = itemView.findViewById(R.id.tv_check_in_time);
             tvCheckOutTime = itemView.findViewById(R.id.tv_check_out_time);
+            tvBedrooms = itemView.findViewById(R.id.tv_bedrooms);
+            tvBathrooms = itemView.findViewById(R.id.tv_bathrooms);
             ratingBar = itemView.findViewById(R.id.ratingBar);
             viewPager = itemView.findViewById(R.id.viewPager);
             btnPrev = itemView.findViewById(R.id.btn_prev);
@@ -161,6 +176,7 @@ public class SathramAdapter extends RecyclerView.Adapter<SathramAdapter.SathramV
             cbNonAc = itemView.findViewById(R.id.cb_non_ac);
             cbHotWater = itemView.findViewById(R.id.cb_hot_water);
             cbParking = itemView.findViewById(R.id.cb_parking);
+            cbKitchen = itemView.findViewById(R.id.cb_kitchen);
             btnEdit = itemView.findViewById(R.id.btn_edit);
             btnDelete = itemView.findViewById(R.id.btn_delete);
         }

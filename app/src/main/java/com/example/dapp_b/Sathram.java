@@ -20,6 +20,9 @@ public class Sathram implements Serializable {
     private boolean nonAcRooms;
     private boolean hotWater;
     private boolean parking;
+    private boolean kitchen;
+    private String bedrooms; // New field
+    private String bathrooms; // New field
     private String stayType;
     private String checkInTime;
     private String checkOutTime;
@@ -156,6 +159,30 @@ public class Sathram implements Serializable {
 
     public void setParking(boolean parking) {
         this.parking = parking;
+    }
+
+    public boolean isKitchen() {
+        return kitchen;
+    }
+
+    public void setKitchen(boolean kitchen) {
+        this.kitchen = kitchen;
+    }
+
+    public String getBedrooms() {
+        return bedrooms;
+    }
+
+    public void setBedrooms(String bedrooms) {
+        this.bedrooms = bedrooms;
+    }
+
+    public String getBathrooms() {
+        return bathrooms;
+    }
+
+    public void setBathrooms(String bathrooms) {
+        this.bathrooms = bathrooms;
     }
 
     public String getStayType() {

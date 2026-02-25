@@ -13,6 +13,7 @@
         android:padding="24dp">
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -93,6 +94,28 @@
                     android:textColor="@color/glass_text_color"
                     android:textColorHint="@color/glass_panel_stroke" />
             </LinearLayout>
+
+            <EditText
+                android:id="@+id/etBedrooms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="@color/glass_panel_stroke"
+                android:hint="Number of Bedrooms"
+                android:textColor="@color/glass_text_color"
+                android:textColorHint="@color/glass_panel_stroke"
+                android:visibility="gone"/>
+
+            <EditText
+                android:id="@+id/etBathrooms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="@color/glass_panel_stroke"
+                android:hint="Number of Bathrooms"
+                android:textColor="@color/glass_text_color"
+                android:textColorHint="@color/glass_panel_stroke"
+                android:visibility="gone"/>
 
             <EditText
                 android:id="@+id/etLatitude"
@@ -203,6 +226,15 @@
                 android:buttonTint="@color/glass_text_color"
                 android:text="Car Parking"
                 android:textColor="@color/glass_text_color" />
+
+            <CheckBox
+                android:id="@+id/cbKitchen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/glass_text_color"
+                android:text="Kitchen"
+                android:textColor="@color/glass_text_color"
+                android:visibility="gone"/>
 
             <RadioGroup
                 android:id="@+id/rgStayType"

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ public class SathramListActivity extends AppCompatActivity {
     private SathramAdapter sathramAdapter;
     private List<Sathram> sathramList;
     private DatabaseReference databaseReference;
+    private TextView tvCategoryTitle;
     private static final String TAG = "SathramListActivity";
 
     @Override
@@ -34,11 +36,14 @@ public class SathramListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sathram_list);
 
+        tvCategoryTitle = findViewById(R.id.tv_category_title);
+
         String categoryValue = getIntent().getStringExtra("CATEGORY");
         if (categoryValue == null) {
             categoryValue = "CommunitySathrams"; // Default category
         }
         final String category = categoryValue;
+        tvCategoryTitle.setText(category);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
